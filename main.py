@@ -9,7 +9,7 @@ from telebot.types import (
 )
 
 # --- НАСТРОЙКИ ---
-TOKEN = "8558398620:AAG0ZnUUIif8VXmUGz0doZ0g7JwzhD2MEtQ"
+TOKEN = "8949865145:AAHsbSmMjcAbgkjmCSRv58eauffl5VrAvPY"
 CHANNEL_ID = "@ne_avito_ru"  # ⚠️ Укажите ваш реальный канал
 MODERATION_CHAT_ID = 8768838896  # ⚠️ Укажите ваш числовой ID модератора
 # -----------------
