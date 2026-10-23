@@ -2,16 +2,16 @@ import os
 import threading
 import telebot
 from flask import Flask
-from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup, InputMediaPhoto
+from telebot.types import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    InputMediaPhoto,
+)
 
 # --- НАСТРОЙКИ ---
 TOKEN = "8558398620:AAG0ZnUUIif8VXmUGz0doZ0g7JwzhD2MEtQ"
-CHANNEL_ID = (  # ⚠️ Укажите ваш реальный канал (например: "@my_channel")
-    "@your_channel_username"
-)
-MODERATION_CHAT_ID = (  # ⚠️ Укажите ваш числовой ID модератора
-    123456789
-)
+CHANNEL_ID = "@ne_avito_ru"  # ⚠️ Укажите ваш реальный канал
+MODERATION_CHAT_ID = 8768838896  # ⚠️ Укажите ваш числовой ID модератора
 # -----------------
 
 bot = telebot.TeleBot(TOKEN)
@@ -64,12 +64,12 @@ def ready_handler(message):
     if len(photos) == 1:
       bot.send_photo(chat_id, photos[0], caption=caption)
     else:
-      media = [
-          InputMediaPhoto(photos[0], caption=caption)
-          if i == 0
-          else InputMediaPhoto(photos[i])
-          for i in range(len(photos))
-      ]
+      media = []
+      for i in range(len(photos)):
+        if i == 0:
+          media.append(InputMediaPhoto(photos[0], caption=caption))
+        else:
+          media.append(InputMediaPhoto(photos[i]))
       bot.send_media_group(chat_id, media)
 
     bot.send_message(
@@ -191,12 +191,12 @@ def text_handler(message):
               MODERATION_CHAT_ID, photos[0], caption=caption, reply_markup=markup
           )
         else:
-          media = [
-              InputMediaPhoto(photos[0], caption=caption)
-              if i == 0
-              else InputMediaPhoto(photos[i])
-              for i in range(len(photos))
-          ]
+          media = []
+          for i in range(len(photos)):
+            if i == 0:
+              media.append(InputMediaPhoto(photos[0], caption=caption))
+            else:
+              media.append(InputMediaPhoto(photos[i]))
           bot.send_media_group(MODERATION_CHAT_ID, media)
           bot.send_message(
               MODERATION_CHAT_ID,
@@ -253,12 +253,12 @@ def moderation_callback(call):
       if len(photos) == 1:
         bot.send_photo(CHANNEL_ID, photos[0], caption=caption)
       else:
-        media = [
-            InputMediaPhoto(photos[0], caption=caption)
-            if i == 0
-            else InputMediaPhoto(photos[i])
-            for i in range(len(photos))
-        ]
+        media = []
+        for i in range(len(photos)):
+          if i == 0:
+            media.append(InputMediaPhoto(photos[0], caption=caption))
+          else:
+            media.append(InputMediaPhoto(photos[i]))
         bot.send_media_group(CHANNEL_ID, media)
 
       bot.send_message(
@@ -321,4 +321,4 @@ if __name__ == "__main__":
   t.start()
 
   print("Бот запущен на облачном сервере...")
-  bot.infinity_polling()
+  bot.infinity_polling(skip_pending=True)
